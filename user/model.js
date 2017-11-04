@@ -2,13 +2,37 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const bcrypt = require('bluebird').promisifyAll(require('bcrypt'));
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
-  name: {type: String, required: true},
+  name: {type: String, required: true, unique: true},
   group: {type: String},
   password : {type: String, require: true},
-  email : {type: String, require: true}
+  email : {type: String},
   assets : [{}],
 });
 
-module.exports = mongoose.model('users', userSchema); // collection, Schema, creates constructor function
+userSchema.methods.generateHash = function(password) {
+  return bcrypt.hashAsync(password, 10)
+    .then((hashed) => {
+      this.password = hashed;
+      return this;
+    });
+};
+
+userSchema.methods.comparePassword = function(password) {
+  return bcrypt.compareAsync(password, this.password)
+    .then(res => {
+      if (res) {
+        return this;
+      }
+      throw new Error('password did not match what we have on file');
+    });
+};
+
+userSchema.methods.generateToken = function(){
+  return jwt.sign({ _id: this._id}, process.env.SECRET || 'change this');
+};
+
+module.exports = mongoose.model('User', userSchema); // collection, Schema, creates constructor function
