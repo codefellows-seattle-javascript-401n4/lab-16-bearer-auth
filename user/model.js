@@ -32,7 +32,7 @@ userSchema.methods.comparePassword = function(password) {
 };
 
 userSchema.methods.generateToken = function(){
-  return jwt.sign({ _id: this._id}, process.env.SECRET || 'change this');
+  return jwt.sign({ _id: this._id}, process.env.APP_SECRET);
 };
 
 module.exports = mongoose.model('User', userSchema); // collection, Schema, creates constructor function
