@@ -27,7 +27,7 @@ userSchema.methods.comparePassword = function(password) {
       if (res) {
         return this;
       }
-      throw new Error('password did not match what we have on file');
+      return new Error('password did not match what we have on file');
     });
 };
 

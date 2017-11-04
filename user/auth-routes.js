@@ -15,18 +15,21 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
         .then(user => {
           res.send(user.generateToken());
         })
-        .catch(next);
+        .catch(err => next({statusCode: 403, message: err.message}));
     })
-    .catch(next);
+    .catch(err => next({statusCode: 403, message: err.message}));
 });
 
 authRouter.get('/signin', basicHttp, (req, res, next) => {
   User.findOne({name: req.auth.username})
     .then(user => {
-      if (!user) next({statusCode: 403, message: 'no user'});
+      if (!user) return next({statusCode: 403, message: 'no user'});
       user.comparePassword(req.auth.password)
       //take id of user, put it json web token, using jsonwebtoken
         .then(user => {
+          if (user instanceof Error) {
+            next({statusCode: 401, message: user.message});
+          }
           res.send(user.generateToken());
         })
         .catch(err => next({statusCode: 403, message: err.message}));
