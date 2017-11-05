@@ -30,11 +30,5 @@ userSchema.methods.generateToken = function() {
     return jwt.sign({id: this._id}, process.env.SECRET || 'change this');
 }
 
-// could we hash the password here?
-// userSchema.pre('save', (next) => {
-//     console.log(this);
-// this.password = 'not actually hello haha';
-// next();
-// });
 
 module.exports = mongoose.model('User', userSchema);
