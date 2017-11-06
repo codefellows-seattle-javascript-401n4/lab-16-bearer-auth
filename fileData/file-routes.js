@@ -4,7 +4,8 @@ const express = require('express');
 const jsonParser = require('body-parser').json();
 const FileData = require('./model');
 const ServerError = require('../lib/error');
-
+const bearerAuth = require('../lib/bearer-auth');
+const userHandler = require('../user/user-auth-middleware')
 
 const fileRouter = module.exports = express.Router();
 
@@ -27,7 +28,7 @@ fileRouter.get('/visual_files/:id', (req, res, next) => {
     .catch(err => next(new ServerError (404, 'cant find what you are looking for', err)));
 });
 
-fileRouter.post('/visual_files', jsonParser, (req, res, next) => {
+fileRouter.post('/visual_files', bearerAuth, userHandler.getUserById, jsonParser, (req, res, next) => {
   let newFileData = new FileData(req.body);
   newFileData.save() // saves the file to the database
     .then(data => res.status(200).send(data))
@@ -36,7 +37,7 @@ fileRouter.post('/visual_files', jsonParser, (req, res, next) => {
     });
 });
 
-fileRouter.patch('/visual_files/:id', jsonParser, (req, res, next) => {
+fileRouter.patch('/visual_files/:id', bearerAuth, userHandler.getUserById, jsonParser, (req, res, next) => {
   let newFileData = new FileData(req.body);
   delete newFileData._id;
   FileData.findOneAndUpdate({_id : req.params.id}, {$set:newFileData})
@@ -46,7 +47,11 @@ fileRouter.patch('/visual_files/:id', jsonParser, (req, res, next) => {
     });
 });
 
-fileRouter.put('/visual_files/:id', jsonParser, (req, res, next) => {
+fileRouter.put(
+  '/visual_files/:id',
+  bearerAuth,
+  userHandler.getUserById,
+  jsonParser, (req, res, next) => {
   let newFileData = (new FileData(req.body)).toJSON();
   newFileData._id = null;
   delete newFileData._id;
@@ -59,7 +64,7 @@ fileRouter.put('/visual_files/:id', jsonParser, (req, res, next) => {
     });
 });
 
-fileRouter.delete('/visual_files', jsonParser, (req, res, next) => {
+fileRouter.delete('/visual_files', bearerAuth, userHandler.getUserById, jsonParser, (req, res, next) => {
   FileData.remove({_id: req.params.id})
     .then(() => res.status(200).send('metadata successfully deleted'))
     .catch((err) => {

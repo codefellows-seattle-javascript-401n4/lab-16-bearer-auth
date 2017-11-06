@@ -71,7 +71,7 @@ describe('user auth', () => {
         .get(urlsignin)
         .auth('this name does not exist', 'test')
         .catch(err => {
-          expect(err.status).toEqual(403);
+          expect(err.status).toEqual(400);
           expect(err.response.text).toEqual('no user');
         });
     });

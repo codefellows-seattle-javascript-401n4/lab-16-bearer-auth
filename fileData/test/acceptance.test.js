@@ -5,6 +5,7 @@ const request = require('superagent');
 const mongoose = require('../../lib/mongooseDB');
 const app = require('../../lib/server');
 const FileData = require('../../fileData/model');
+const userHandler = require('../../user/user-auth-middleware')
 
 process.env.DB_URL = 'mongodb://localhost:27017/visual_files_test';
 process.env.PORT = 2000;
@@ -17,6 +18,7 @@ describe('visual_files API', () => {
   beforeAll(() => {
     const DB = process.env.DB_URL;
     mongoose.connect(DB, {useMongoClient: true});
+    return FileData.remove({});
     server = app.listen(PORT);
   });
 
@@ -33,7 +35,7 @@ describe('visual_files API', () => {
 
   describe('POST', () => {
     test('it should create file metadata', () => {
-      let testdata = new FileData({name:'name', description: 'description-get', path: 'path-get'});
+      let testdata = new FileData({name:'post-name', description: 'description-get', path: 'path-get'});
       return request
         .post(url)
         .send(testdata)

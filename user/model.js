@@ -35,4 +35,9 @@ userSchema.methods.generateToken = function(){
   return jwt.sign({ _id: this._id}, process.env.APP_SECRET);
 };
 
+userSchema.methods.getAuthorizationLevel = function(){
+  
+};
+
+
 module.exports = mongoose.model('User', userSchema); // collection, Schema, creates constructor function
