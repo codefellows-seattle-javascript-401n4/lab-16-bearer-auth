@@ -25,9 +25,17 @@ authRouter.get('/signin', basicHTTP, (req, res, next) => {
       if (!user) next({statusCode: 403, message: 'verboden'});
       user.comparePassword(req.auth.password)
         .then(res.send.bind(res))
-        .catch(err => next({statusCode: 403, message: 'Auth seys not'}));
+        .catch(() => next({statusCode: 403, message: 'Auth seys not'}));
       
     }).catch(next);
+});
+
+authRouter.put('/user/:id', jsonParser, (req, res, next) => {
+  delete req.body._id;
+  User.updateOneAndUpdate({_id: req.params.id}, req.body)
+    .then(console.log)
+    .then(() => res.send('Update Successful'))
+    .catch(err => next({error: err}));
 });
 
 authRouter.get('/moneyFromThisPerson', bearerAuthentication, (req, res, next) => {
