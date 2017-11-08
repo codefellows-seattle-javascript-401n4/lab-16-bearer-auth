@@ -39,7 +39,9 @@ describe('user auth', () => {
         .post(urlsignup)
         .send(testdata)
         .then((res) => {
+          let valid = jwt.verify(res.text, process.env.APP_SECRET);
           expect(res.status).toEqual(200);
+          expect(valid._id.length).toBeGreaterThan(0);
         });
     });
 
