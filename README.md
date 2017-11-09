@@ -61,3 +61,4 @@
 ## Bonus
 * **1pt:** a `GET` request to `/api/resource-name` should return an array of all of the ids for that resource
 * **1pt:** create a series of tests for a `DELETE` request
+>>>>>>> e77cc4ae68c500ab1e104422e972cbf23754ec69
