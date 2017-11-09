@@ -1,11 +1,17 @@
 'use strict';
 
 const request = require('superagent'); //a client
+const User = require(__dirname + '/../models/user');
+const jwt = require('jsonwebtoken');
 const authRouter = require(__dirname + '/../routes/auth-routes.js');
 const jsonParser = require('body-parser').json();
 const service = 'localhost:3000';
-process.env.MONGODB_URI = 'mongodb://localhost:27017/auth_dev';
-const server = require('../server');
+process.env.MONGODB_URI = 'mongodb://localhost:27017/auth_test';
+process.env.SECRET = 'testsecret';
+const server = require(__dirname + '/../server');
+
+// let express = require('express');
+// let app = express;
 
 //my token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUwOTk1NDIxMX0.2dNkPQil08MdKjl6SBH0MkYBIZEesvfplJPPZFUhln0
 //use this website to extract id out from the token https://jwt.io/
@@ -38,6 +44,44 @@ describe('GET /signin', () => {
   });
 });
 
-// describe('GET /showMyAccount', () => {
-//   it('should send a valid body, ');
-// });
+describe('GET /showMyAccount', () => {
+  it('should respond with 200 and send a valid body', () => {
+    let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUwOTk1NDIxMX0.2dNkPQil08MdKjl6SBH0MkYBIZEesvfplJPPZFUhln0';
+    let url = `http://${service}/showMyAccount`;
+    return request
+    .get(url)
+    .set('Authorization', 'Bearer ' + token)
+    .then(res => {
+      expect(res.render).not.toBe(null);
+      console.log('res.render showMyAccount: ' + res.render);
+    });
+  });
+});
+
+beforeAll(() => {
+  return User.remove({});
+});
+
+it('should be able to create a user', () => {
+  return request
+    .post('localhost:3000/signup')
+    .send({username: 'test', password: 'testPassword'})
+    .then(res => {
+      let decoded = jwt.verify(res.text, 'testsecret');
+      expect(decoded.id.length).not.toBe(0);
+      return User.findOne({username: 'test'})
+        .then(user => expect(user._id.toString()).toEqual(decoded.id));
+    });
+});
+
+it('should be able to sign in a user', () => {
+  return request
+    .get('localhost:3000/signin')
+    .auth('test', 'testPassword')
+    .then(res => {
+      let decoded = jwt.verify(res.text, 'testsecret');
+      expect(decoded.id.length).not.toBe(3);
+      return User.findOne({username: 'test'})
+        .then(user => expect(user._id.toString()).toEqual(decoded.id));
+    });
+});

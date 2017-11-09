@@ -2,6 +2,64 @@
 ===
 
 ## NOTES & INSTRUCTIONS FOR HOW MY LAB WORKS
+
+#TO CREATE A NEW ORDER FOR A USER
+
+1. IF YOU HAVE NOT SIGNUP, THEN DO SO. TO SIGN UP:
+$ echo '{"username": "PeanutButter", "password": "yummyyum", "email":"peanut@restaurants.com"}' | http post localhost:3000/signup
+
+
+2. LOGIN IN
+http :3000/signin -a PeanutButter:yummyyum
+
+_YOU SHOULD SEE THIS RESULT_
+_THE TOKEN IS THIS BELOW: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUxMDIwMzc5OH0.1Xjd6VMEToZplLUcZg3qix6MrOQaA_7TyfuzfTnCpR8_
+
+`HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 148
+Content-Type: text/html; charset=utf-8
+Date: Thu, 09 Nov 2017 05:03:18 GMT
+ETag: W/"94-2GRmgD7ietmLgyYKcPx4fTE7BaI"
+X-Powered-By: Express
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUxMDIwMzc5OH0.1Xjd6VMEToZplLUcZg3qix6MrOQaA_7TyfuzfTnCpR8`
+
+_OPTIONAL: SET UP AN ENV VARIABLE FOR JWT_
+[hanhthaoluu@MacBook-Pro]~/401/labs/lab-17-bearer-auth[lab-thao !?]:$ JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUxMDIwMzc5OH0.1Xjd6VMEToZplLUcZg3qix6MrOQaA_7TyfuzfTnCpR8
+[hanhthaoluu@MacBook-Pro]~/401/labs/lab-17-bearer-auth[lab-thao !?]:$ echo $JWT
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUxMDIwMzc5OH0.1Xjd6VMEToZplLUcZg3qix6MrOQaA_7TyfuzfTnCpR8
+
+
+3. CREATE AN ORDER
+$ echo '{"item":"red hat", "user":"59f421c72b61903a60194c9a"}' | http post localhost:3000/orders Authorization:"Bearer $JWT"
+
+_YOU SHOULD SEE THIS RESULT_
+_THE ORDER ID IN THE BELOW RESULT IS THIS:5a03e40f5ccd2e77f46c5fc0_
+
+`HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 134
+Content-Type: application/json; charset=utf-8
+Date: Thu, 09 Nov 2017 05:13:51 GMT
+ETag: W/"86-BLlz3zlQIRef1zeeI6FLeYaMIAs"
+X-Powered-By: Express
+
+{
+    "__v": 0,
+    "_id": "5a03e40f5ccd2e77f46c5fc0",
+    "item": "red hat",
+    "orderedDate": "2017-11-09T05:13:51.045Z",
+    "user": "59f421c72b61903a60194c9a"
+}`
+
+4. TO VIEW ALL ORDERS
+$ http :3000/orders Authorization:"Bearer $JWT"
+
+5. TO DELETE AN ORDER
+$http DELETE :3000/orders/5a03e40f5ccd2e77f46c5fc0 Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUxMDIwMzc5OH0.1Xjd6VMEToZplLUcZg3qix6MrOQaA_7TyfuzfTnCpR8"
+
+
 #CLIENT INSTRUCTIONS
 1. web browser: localhost:8080
 2. should see the below on the webpage
@@ -60,6 +118,8 @@ mongo
 _$ echo '{"username": "PeanutButter", "password": "yummyyum", "email":"peanut@restaurants.com"}' | http post localhost:3000/signup_
 //to signin a user, run this command in the terminal
 http :3000/signin -a PeanutButter:yummyyum
+//to the Tests
+npm test
 
 #REFERENCES
 1. https://www.flickr.com/photos/girliemac/sets/72157628409467125/

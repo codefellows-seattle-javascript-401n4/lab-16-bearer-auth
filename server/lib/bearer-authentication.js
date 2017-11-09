@@ -19,6 +19,10 @@ module.exports = (req, res, next) => {
   let secret = process.env.SECRET || 'changethis';
   let decodedToken = jwt.verify(token, secret);
   req.userId = decodedToken.id;
-
-  next();
+  User.findOne({_id: req.userId})
+    .then(user => {
+      if(!user) next ({statusCode: 403, err: new Error('User Not Found With The Corresponding JWT')});
+      req.user = user;
+      next();
+    });
 };

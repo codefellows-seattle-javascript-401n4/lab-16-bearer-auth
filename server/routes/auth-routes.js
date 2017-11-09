@@ -21,6 +21,7 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
 });
 
 authRouter.get('/signin', basicHTTP, (req, res, next) => {
+  console.log('hi from authRouter.get /signin ');
   User.findOne({username: req.auth.username})
     .then(user => {
       if(!user) next({statusCode: 403, message: 'Forbidden'});
