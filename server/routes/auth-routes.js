@@ -11,17 +11,19 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
   const password = req.body.password;
   delete req.body.password;
   (new User(req.body)).generateHash(password)
+
     .then((user) => {
       user.save()
         //.then(res.send.bind(res))
-        .then(user => res.send(user.generateToken()))
+        .then(user => {
+          res.send(user.generateToken());
+        })
         .catch(next);
     })
     .catch(next);
 });
 
 authRouter.get('/signin', basicHTTP, (req, res, next) => {
-  console.log('hi from authRouter.get /signin ');
   User.findOne({username: req.auth.username})
     .then(user => {
       if(!user) next({statusCode: 403, message: 'Forbidden'});

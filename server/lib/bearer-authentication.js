@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
     throw new Error('You must authorize');
   }
   //check for a jwt
+  console.log('req.headers.authorization' + req.headers.authorization);
   let token = req.headers.authorization.split('Bearer ')[1];
   if (!token) {
     throw new Error('Invalid Authorization Provided');
