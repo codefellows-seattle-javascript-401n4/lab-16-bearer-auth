@@ -1,0 +1,33 @@
+{
+  "name": "lab-kyle",
+  "version": "0.0.1",
+  "description": "Lab-17 authentication",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codefellows-seattle-javascript-401n4/lab-17-bearer-auth.git"
+  },
+  "author": "richey.kyle.i@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codefellows-seattle-javascript-401n4/lab-17-bearer-auth/issues"
+  },
+  "homepage": "https://github.com/codefellows-seattle-javascript-401n4/lab-17-bearer-auth#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
+    "jsonwebtoken": "^8.1.0",
+    "mongodb": "^2.2.33",
+    "mongoose": "^4.13.0"
+  },
+  "devDependencies" : {
+    "jest": "^21.2.1",
+    "expect": "^21.2.1"
+  }
+}
