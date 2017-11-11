@@ -6,7 +6,7 @@ require('dotenv').config();
 
 let app = express();
 mongoose.Promise = require('bluebird');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:3000/bearer-auth', {useMongoClient: true});
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bearer-auth', {useMongoClient: true});
 
 app.use(require('../routes/auth-routes.js'));
 
@@ -51,7 +51,7 @@ module.exports = {
             console.log('Server off');
           }
         });
-        
+
       }
     });
   },
