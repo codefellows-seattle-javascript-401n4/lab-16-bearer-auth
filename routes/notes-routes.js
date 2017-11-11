@@ -1,14 +1,15 @@
 'use strict';
 
-const Note = require('note');
-const bearAuth = require('../lib/bearer-authintication');
+const Note = require('../models/note');
+const bearAuth = require('../lib/bearer-authentication');
 const jsonParser = require('body-parser').json();
 const notesRoutes = module.exports = require('express').Router();
 
 notesRoutes.post('/notes', jsonParser, bearAuth, (req, res, next) =>{
-  req.body.userId = req.user._id;
+  console.log('hits here')
+  req.body.userId = req.userId;
   (new Note(req.body)).save()
-  .then(res.send.bing(res))
+  .then(res.send.bind(res))
   .catch(next);
 });
 notesRoutes.get('/notes', jsonParser, bearAuth, (req, res, next) => {
