@@ -60,6 +60,36 @@ $ http :3000/orders Authorization:"Bearer $JWT"
 $http DELETE :3000/orders/5a03e40f5ccd2e77f46c5fc0 Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUxMDIwMzc5OH0.1Xjd6VMEToZplLUcZg3qix6MrOQaA_7TyfuzfTnCpR8"
 
 
+#TO VIEW MONGO TESTING DB
+
+`[hanhthaoluu@MacBook-Pro]~/401/labs/lab-17-bearer-auth[lab-thao]:$ mongo
+MongoDB shell version v3.4.9
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 3.4.9
+Server has startup warnings:
+2017-11-08T23:02:38.905-0800 I CONTROL  [initandlisten]
+2017-11-08T23:02:38.905-0800 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2017-11-08T23:02:38.905-0800 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2017-11-08T23:02:38.905-0800 I CONTROL  [initandlisten]
+> show dbs
+admin      0.000GB
+auth_dev   0.000GB
+auth_test  0.000GB
+local      0.000GB
+> use auth_test
+switched to db auth_test
+> show collections
+users
+> db.users.find({}).pretty()
+{
+	"_id" : ObjectId("5a040cfbef08099a747620db"),
+	"password" : "$2a$10$Eh/uVJKLDCrpXrZvAhHSYeUArASD7ng4CU6QmeMCoL8K/sTQ0sZzm",
+	"username" : "test",
+	"__v" : 0
+}`
+
+
+
 #CLIENT INSTRUCTIONS
 1. web browser: localhost:8080
 2. should see the below on the webpage
