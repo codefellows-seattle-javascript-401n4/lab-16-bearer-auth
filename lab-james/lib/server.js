@@ -9,6 +9,13 @@ mongoose.Promise = require('bluebird');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bearer-auth', {useMongoClient: true});
 
 app.use(require('../routes/auth-routes.js'));
+app.use(require('../routes/gamesRoutes.js'));
+app.use(require('../routes/platformRoutes.js'));
+
+app.use( (req, res, next) => {
+  res.append('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 app.use(require('./middleware/error.js'));
 
