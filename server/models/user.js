@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   email: {type: String, required: false, unique: true}
 });
 
+//since I should not store password in plain text, so I have to generate a hashed password and store it
 userSchema.methods.generateHash = function(password) {
   return bcrypt.hashAsync(password, 10)
     .then((hash) => {
@@ -23,6 +24,8 @@ userSchema.methods.comparePassword = function(password) {
     .then(res => {
       if(res) return this;
       throw new Error('Password did not match');
+    })
+    .catch(() => {
     });
 };
 

@@ -8,6 +8,8 @@ const bearerAuthentication = require(__dirname + '/../lib/bearer-authentication'
 const authRouter = module.exports = require('express').Router();
 
 authRouter.post('/signup', jsonParser, (req, res, next) => {
+  if(!req.body.username || !req.body.password || !req.body.email)
+    return next({statusCode: 400, err: new Error('Request Error: Must Provide Username, Password, and Email')});
   const password = req.body.password;
   delete req.body.password;
   (new User(req.body)).generateHash(password)
@@ -26,10 +28,12 @@ authRouter.post('/signup', jsonParser, (req, res, next) => {
 authRouter.get('/signin', basicHTTP, (req, res, next) => {
   User.findOne({username: req.auth.username})
     .then(user => {
-      if(!user) next({statusCode: 403, message: 'Forbidden'});
+      if(!user) next({statusCode: 401, message: 'Request Error: User not found'});
       user.comparePassword(req.auth.password)
-      .then(user => res.send(user.generateToken()))
-      .catch(err => next({statusCode: 403, message: 'Unsuccessful Authentication hjkgjkugyu'}));
+      .then(user => {
+        res.send(user.generateToken());
+      })
+      .catch(err => next({statusCode: 403, message: 'Unsuccessful Authentication'}));
     }).catch(next);
 });
 

@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
   //check for a jwt
   let token = req.headers.authorization.split('Bearer ')[1];
   if (!token) {
-    throw new Error('Invalid Authorization Provided');
+    next({statusCode: 401, err: new Error('Invalid Authorization Provided')});
   }
 
   //extract the Id
@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
   req.userId = decodedToken.id;
   User.findOne({_id: req.userId})
     .then(user => {
-      if(!user) next ({statusCode: 403, err: new Error('User Not Found With The Corresponding JWT')});
+      if(!user) next ({statusCode: 401, err: new Error('User Not Found With The Corresponding JWT')});
       req.user = user;
       next();
     });
