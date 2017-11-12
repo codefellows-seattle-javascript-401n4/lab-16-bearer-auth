@@ -13,7 +13,7 @@ notesRoutes.post('/notes', jsonParser, bearAuth, (req, res, next) =>{
   .catch(next);
 });
 notesRoutes.get('/notes', jsonParser, bearAuth, (req, res, next) => {
-  Note.find({userId: req.user._id})
+  Note.find({userId: req.userId})
   .then(res.send.bind(res))
   .catch(next);
 });
