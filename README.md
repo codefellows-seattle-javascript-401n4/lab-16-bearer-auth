@@ -16,7 +16,7 @@ npm test
 
 _YOU SHOULD SEE THIS RESULT_
 
-`[hanhthaoluu@MacBook-Pro]~/401/labs/lab-17-bearer-auth[lab-thao !x?]:$ npm test
+`[hanhthaoluu@MacBook-Pro]~/401/labs/lab-17-bearer-auth[lab-thao !]:$ npm test
 
 > lab-17-bearer-auth@1.0.0 test /Users/hanhthaoluu/401/labs/lab-17-bearer-auth
 > jest
@@ -36,17 +36,21 @@ _YOU SHOULD SEE THIS RESULT_
 
     console.log server/server.js:28
       __SERVER_ON__3000
+    console.log server/test/authRoutes.test.js:52
+      basicToken:  dGVzdDp0ZXN0UGFzc3dvcmQ=
+    console.log server/test/authRoutes.test.js:87
+      myJWT:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDkyYWYxOTJlMWUzNThkMTNkOTc3NiIsImlhdCI6MTUxMDU1MDI1N30.4hbbex9KrMGDm6-Zg0nC45KFNEO2HOpYykpP8NM6KcM
     console.log server/server.js:41
       SERVER OFF
-    console.log server/test/authRoutes.test.js:78
+    console.log server/test/authRoutes.test.js:95
       res.text showMyAccount: test has Billions of Dollars
 
  PASS  server/test/basicHttp.test.js
 
 Test Suites: 3 passed, 3 total
-Tests:       17 passed, 17 total
+Tests:       18 passed, 18 total
 Snapshots:   0 total
-Time:        4.257s
+Time:        4.779s
 Ran all test suites.
 `
 
