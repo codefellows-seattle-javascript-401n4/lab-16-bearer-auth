@@ -21,8 +21,6 @@ notesRoutes.get('/notes', jsonParser, bearAuth, (req, res, next) => {
 notesRoutes.delete('/notes/:id', jsonParser, bearAuth, (req, res, next) => {
   Note.find({_id: req.params.id})
   .then(note => {
-    if(note.userId != req.user._id.toString()) return next({statusCode: 403});
-
     Note.remove({_id: req.params.id})
     .then(() => res.send('successsss'))
     .catch(next);
