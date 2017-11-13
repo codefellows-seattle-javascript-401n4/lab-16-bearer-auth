@@ -3,6 +3,50 @@
 
 ## NOTES & INSTRUCTIONS FOR HOW MY LAB WORKS
 
+#TO JUST RUN THE TESTS  
+1. serve up mongodb in one terminal with the below command
+mongod --dbpath=./db
+2. run the Tests in another terminal with the below command
+npm test
+
+
+_YOU SHOULD SEE THIS RESULT_
+
+`[hanhthaoluu@MacBook-Pro]~/401/labs/lab-17-bearer-auth[lab-thao !x?]:$ npm test
+
+> lab-17-bearer-auth@1.0.0 test /Users/hanhthaoluu/401/labs/lab-17-bearer-auth
+> jest
+
+ PASS  server/test/ordersRoutes.test.js
+  ● Console
+
+    console.log server/server.js:28
+      __SERVER_ON__3000
+    console.log server/routes/orders-routes.js:40
+      order:  []
+    console.log server/server.js:41
+      SERVER OFF
+
+ PASS  server/test/authRoutes.test.js
+  ● Console
+
+    console.log server/server.js:28
+      __SERVER_ON__3000
+    console.log server/server.js:41
+      SERVER OFF
+    console.log server/test/authRoutes.test.js:78
+      res.text showMyAccount: test has Billions of Dollars
+
+ PASS  server/test/basicHttp.test.js
+
+Test Suites: 3 passed, 3 total
+Tests:       17 passed, 17 total
+Snapshots:   0 total
+Time:        4.257s
+Ran all test suites.
+`
+
+
 #TO CREATE A NEW ORDER FOR A USER
 
 1. IF YOU HAVE NOT SIGNUP, THEN DO SO. TO SIGN UP:
@@ -128,13 +172,13 @@ https://github.com/auth0/node-jsonwebtoken
 _With encryption, make sure that you are always on the latest versions.  So change the versions for bcrypt and jsonwebtoken in package.json to the "lastest" versions_
 
 
-#TESTING INSTRUCTIONS
+#EXTRACTING AN ID FROM A JWT INSTRUCTIONS
 1. my generated token/jwt: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhMDAxMmEzOTA3MzU5OWQ5NDllODI5YyIsImlhdCI6MTUwOTk1NDIxMX0.2dNkPQil08MdKjl6SBH0MkYBIZEesvfplJPPZFUhln0
 2. use this website to extract id out from the token https://jwt.io/
 3. the extracted id = 5a0012a39073599d949e829c
 
 
-RUNNING IN DIFFERENT TERMINALS:
+#RUNNING IN DIFFERENT TERMINALS:
 //serve up mongodb in another terminal
 mkdir db
 mongod --dbpath=./db
@@ -148,14 +192,14 @@ mongo
 _$ echo '{"username": "PeanutButter", "password": "yummyyum", "email":"peanut@restaurants.com"}' | http post localhost:3000/signup_
 //to signin a user, run this command in the terminal
 http :3000/signin -a PeanutButter:yummyyum
-//to the Tests
-npm test
+
 
 #REFERENCES
 1. https://www.flickr.com/photos/girliemac/sets/72157628409467125/
 2. google mongo Shell Quick Reference for useful commands to run in your mongo console and to verify that you have data going in and to see where things are going wrong
 3. https://github.com/auth0/node-jsonwebtoken
 
+#MONGODB COMMANDS
 1. make a db folder for each of your project: _$mkdir db_
 2. make sure db is in your gitignore, so it's not commited up to github
 3. compared to SQL, there is very little setup in Mongodb
@@ -166,9 +210,7 @@ _$mongod --dbpath=./db_
 7. _show dbs_
 8. _use dbs_ //should see 'switched to db dbs'
 9. _db.users.find({}).pretty()_
-10. to start my server, run this command in another terminal: $ nodemon server.js
-11. to create a user, open another terminal and type in this example user:
-_$ echo '{"username": "PeanutButter", "password": "yummyyum", "email":"peanut@restaurants.com"}' | http post localhost:3000/signup_
+
 
 ////////SIGNING UP FOR A USERNAME AND PASSWORD
 ////////////IF USING .then(res.send.bind(res))  in auth-routes.js

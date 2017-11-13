@@ -33,7 +33,7 @@ authRouter.get('/signin', basicHTTP, (req, res, next) => {
       .then(user => {
         res.send(user.generateToken());
       })
-      .catch(err => next({statusCode: 403, message: 'Unsuccessful Authentication'}));
+      .catch(err => next({statusCode: 403, message: 'Unsuccessful Authentication '}));
     }).catch(next);
 });
 

@@ -7,7 +7,7 @@ const bcrypt = require('bluebird').promisifyAll(require('bcrypt'));
 const userSchema = new mongoose.Schema({
   username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
-  email: {type: String, required: false, unique: true}
+  email: {type: String, required: false, unique: true},
 });
 
 //since I should not store password in plain text, so I have to generate a hashed password and store it

@@ -3,17 +3,12 @@
 const request = require('superagent');
 const User = require(__dirname + '/../models/user');
 const Order = require(__dirname + '/../models/order');
-const jwt = require('jsonwebtoken');
-const ordersRoutes = require(__dirname + '/../routes/orders-routes');
-const authRouter = require(__dirname + '/../routes/auth-routes');
-const jsonParser = require('body-parser').json();
 const service = 'localhost:3000';
 process.env.MONGODB_URI = 'mongodb://localhost:27017/order_test';
 process.env.SECRET = 'testsecret';
 const server = require(__dirname + '/../server');
 
 beforeAll(() => {
-  console.log('hi from beforeAll');
   server.start();
   User.remove({});
   Order.remove({});
@@ -21,10 +16,6 @@ beforeAll(() => {
 
 afterAll(() => {
   server.stop();
-});
-
-afterEach(() => {
-  Order.remove({});
   return User.remove({});
 });
 
@@ -42,12 +33,13 @@ beforeEach(() => {
     user.save();
   });
 
-  // return new Order({item: 'bottles', orderedDate: Date.now, user: userID})
-  // .then((order) => {
-  //   orderID = order._id;
-  //   order.save();
-  // });
 });
+
+afterEach(() => {
+  Order.remove({});
+  return User.remove({});
+});
+
 
 describe('GET /orders', () => {
 
@@ -108,7 +100,7 @@ describe('POST /orders', () => {
 
   it('should respond with a 400 for a request with no body provided or invalid body', () => {
     let url = `http://${service}/orders`;
-    console.log(`token: `, generatedToken);
+
     return request
     .post(url)
     .set('Authorization', 'Bearer ' + generatedToken)
@@ -169,7 +161,6 @@ describe('PUT /orders/:id', () => {
     .set('Authorization', 'Bearer ' + generatedToken)
     .send({item: 'socks', orderedDate: Date.now, user: userID})
     .then(res => {
-      console.log(`res.id: `, res);
       let orderID = res.body._id;
       let url = `http://${service}/orders/${orderID}`;
       return request
