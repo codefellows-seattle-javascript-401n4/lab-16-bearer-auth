@@ -5,7 +5,11 @@
 
 #TO JUST RUN THE TESTS  
 1. serve up mongodb in one terminal with the below command
+mkdir db
+//then run this command in the same terminal
 mongod --dbpath=./db
+//should see this at the bottom
+waiting for connections on port 27017
 2. run the Tests in another terminal with the below command
 npm test
 
