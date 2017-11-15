@@ -4,7 +4,8 @@
   "description": "![CF](https://camo.githubusercontent.com/70edab54bba80edb7493cad3135e9606781cbb6b/687474703a2f2f692e696d6775722e636f6d2f377635415363382e706e67) 17: Bearer Auth\r ===",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "start": "nodemon ./index.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,9 @@
     "express": "^4.16.2",
     "jest": "^21.2.1",
     "jsonwebtoken": "^8.1.0",
+    "mocha": "^4.0.1",
     "mongoose": "^4.13.2",
+    "nodemon": "^1.12.1",
     "superagent": "^3.8.1"
   }
 }
