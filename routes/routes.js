@@ -31,10 +31,9 @@ Router.post('/signup', jsonParser, (req, res, next) => {
     }
 });
 
-Router.put('/update/:username', (req, res, next) => {
-    parseJWT(req);
+Router.put('/update/:username', parseJWT ,(req, res, next) => {
 
-    if (req.parseJWT.message === 'No headers.') res.status(401).send("You did not send headers.");
+    if (req.parseJWT.message === 'No headers.') res.status(400).send("You did not send headers.");
     if (!req.parseJWT.verified) res.status(401).send("Your token was invalid.");
     if (req.parseJWT.verified) {
         User.findOne({_id: req.parseJWT.verified}).then(user => {

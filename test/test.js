@@ -10,22 +10,22 @@ let newUsername = 'newUsername';
 let password = 'testingPassword';
 let token = '';
 
-
-describe('Create a simple user with password for later testing our token on', done => {
-    // We already did this full testing in lab 16 so i've omitted it here
-    before(done => {
-        User.remove({username: newUsername}).then(() => {
-            app.start(process.env.PORT || 3000);
-            done();
-        });
-    });
-
-    after(done => {
-        app.stop();
+beforeAll(done => {
+    User.remove({username: newUsername}).then(() => {
+        app.start(process.env.PORT || 3000);
         done();
     });
+});
 
-    it('Should create a new user "testingUsername"', function(done) {
+afterAll(done => {
+    app.stop();
+});
+
+
+
+
+test('Create a simple user with password for later testing our token on', done => {
+
         User.remove({username: username}).then(() => {
             request.post(`localhost:${process.env.PORT || 3000}/api/signup`).send({username: username, password: password}).then(response => {
                 // successful response
@@ -34,63 +34,55 @@ describe('Create a simple user with password for later testing our token on', do
                done();
             });
         });
-    });
 });
 
-describe('Attept to log in with our new account and get back a jwt token', (done) => {
-    before(done => {
-        app.start(process.env.PORT || 3000);
-        done();
-    });
 
-    after(done => {
-        app.stop();
-        done();
-    });
 
-    it('Should return a jwt token for us after we log in', done => {
+test('Attept to log in with our new account and get back a jwt token', (done) => {
+
         request.get(`localhost:${process.env.PORT || 3000}/api/signin`).auth(username, password).then(response => {
             expect(response.status).toEqual(200);
+
             token = response.text;
             done();
         });
-    });
 });
 
-describe('Testing our new PUT route with our JWT token', done => {
-    before(done => {
-        app.start(process.env.PORT || 3000);
-        done();
-    });
+test('Testing our new PUT route with our JWT token 400', done => {
 
-    after(done => {
-        app.stop();
-        done();
-    });
     // `Authorization`, `Bearer ${token}`
 
-    it('Should return 400 if we did not send Bearer auth', done => {
-        request.put(`localhost:${process.env.PORT || 3000}/api/update/newUsername`).end((err, response) => {
-
-            expect(response.status).toEqual(401);
+        request.put(`localhost:${process.env.PORT || 3000}/api/update/hello`).end((err, response) => {
+            expect(response.status).toEqual(400);
             expect(response.text).toEqual('You did not send headers.');
             done();
         });
-    });
 
-    it('Should throw us a 401 if an invalid token is provided', done => {
-        request.put(`localhost:${process.env.PORT || 3000}/api/update/${newUsername}`).set(`Authorization`, `Bearer 651651`).end((err, response) => {
+});
+
+test('Testing our new PUT route with our JWT token 401', done => {
+
+    // `Authorization`, `Bearer ${token}`
+
+
+        request.put(`localhost:${process.env.PORT || 3000}/api/update/${newUsername}`).set(`Authorization`, `Bearer 651sdfsdfsd`).end((err, response) => {
+
             expect(response.status).toEqual(401);
             expect(response.text).toEqual("Your token was invalid.");
             done();
         });
-    });
 
-    it('Should return 200 and change our username from testingUsername to newUsername', done => {
+});
+
+test('Testing our new PUT route with our JWT token 200', done => {
+
+
+
         request.put(`localhost:${process.env.PORT || 3000}/api/update/${newUsername}`).set(`Authorization`, `Bearer ${token}`).end((err, response) => {
+      
             expect(response.body.username).toEqual('newUsername');
             expect(response.status).toEqual(200);
             done();
         });
-    });
+
 });
