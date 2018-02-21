@@ -11,7 +11,7 @@ module.exports = new Router()
   if(!req.account)
     return next(httpErrors(401, '__REQUEST_ERROR__ no account found'))
   return new Profile({
-    ...req.body,
+    ..req.body,
     account: req.account._id,
     username: req.account.username,
     email: req.account.email,
